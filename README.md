@@ -1,89 +1,123 @@
-# Express.js with ZITADEL
+# Example Auth with Express.js 🚀
 
-[Express.js](https://expressjs.com/) is a popular and powerful framework for building the backend of web applications. In a traditional setup, often called a "Backend for Frontend" (BFF), your Express server manages both your application's logic and renders the web pages that users see.
+![Node.js](https://img.shields.io/badge/Node.js-4D8C2A?style=flat&logo=node.js&logoColor=white)
+![Express.js](https://img.shields.io/badge/Express.js-000000?style=flat&logo=express&logoColor=white)
+![ZITADEL](https://img.shields.io/badge/ZITADEL-2D5D6E?style=flat&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAQCAYAAAAf8/9hAAABKElEQVR42mL8//8/AyTgHcBYAABcAB8kQY+qA5oQh1yJtRZAwM9AABo4gNEDN4hAAAAAElFTkSuQmCC)
 
-To secure such an application, you need a reliable way to handle user logins. For the Express ecosystem, [Passport.js](http://www.passportjs.org/) is the standard and recommended middleware for authentication. Think of it as a flexible security guard for your app. This guide demonstrates how to use Passport.js with an Express v5 application to implement a secure login with ZITADEL.
+Welcome to the **Example Auth with Express.js** repository! This guide will help you secure your Express.js applications using ZITADEL, Passport.js, OpenID Connect (OIDC), and the Proof Key for Code Exchange (PKCE) flow. 
 
-We'll be using the **OpenID Connect (OIDC)** protocol with the **Authorization Code Flow + PKCE**. This is the industry-best practice for security, ensuring that the login process is safe from start to finish. You can learn more in our [guide to OAuth 2.0 recommended flows](https://zitadel.com/docs/guides/integrate/login/oidc/oauth-recommended-flows).
+## Table of Contents
 
-Explore our complete example application to see this in action.
+1. [Introduction](#introduction)
+2. [Getting Started](#getting-started)
+3. [Installation](#installation)
+4. [Configuration](#configuration)
+5. [Usage](#usage)
+6. [Features](#features)
+7. [License](#license)
+8. [Contributing](#contributing)
+9. [Contact](#contact)
+10. [Releases](#releases)
 
-## Resources
+## Introduction
 
-- **Example App Repository:** [Link to your future GitHub repository]
-- **Express.js Documentation:** <https://expressjs.com/>
-- **Passport.js Documentation:** <http://www.passportjs.org/>
-- **Express Session Middleware:** <https://expressjs.com/en/resources/middleware/session.html>
+In today's digital landscape, securing your applications is more important than ever. This guide will walk you through the steps needed to implement authentication in your Express.js app. We will use ZITADEL for identity management and Passport.js for authentication strategies.
 
-## SDK
+## Getting Started
 
-This example uses **Passport.js**, the standard for Express.js authentication. While ZITADEL doesn't offer a specific SDK, Passport.js is highly modular. It works with a "strategy" that handles the communication with ZITADEL. Under the hood, this example uses the powerful [`openid-client`](https://github.com/panva/node-openid-client) library to manage the secure OIDC PKCE flow.
+To begin, you need to have a basic understanding of Express.js and Node.js. If you're new to these technologies, consider reviewing the official documentation for [Node.js](https://nodejs.org/en/docs/) and [Express.js](https://expressjs.com/en/starter/installing.html).
 
-Check out our Example Application to see it in action.
+## Installation
 
-## Example Application
-
-The example repository includes a complete Express.js application, ready to run, that demonstrates how to integrate ZITADEL for user authentication.
-
-### Prerequisites
-
-Before you begin, ensure you have the following installed on your system:
-
-- Node.js (v20 or later is recommended)
-- npm (usually comes with Node.js) or yarn
-
-### Configuration
-
-To run the application, you first need to copy the `.env.example` file to a new file named `.env` and fill in your ZITADEL application credentials.
-
-```
-# The network port where your Express application will listen for requests.
-PORT=3000
-
-# Defines the maximum age of a session in seconds. After this time, the user will need to log in again.
-SESSION_DURATION=3600
-
-# A long, random, and secret string used to sign the session ID cookie. This prevents tampering.
-# Replace this with your own strong secret key.
-SESSION_SECRET="your-very-secret-and-strong-session-key"
-
-# The domain of your ZITADEL instance. You can find this in your ZITADEL console.
-# Example: [https://your-instance-abcdef.zitadel.cloud/](https://your-instance-abcdef.zitadel.cloud/)
-ZITADEL_DOMAIN="https://your-zitadel-domain"
-
-# The unique Client ID for your application, obtained from the ZITADEL console.
-ZITADEL_CLIENT_ID="your-client-id"
-
-# (Optional) The Client Secret if you are using a confidential client type.
-ZITADEL_CLIENT_SECRET=""
-
-# The full URL that ZITADEL will redirect to after a successful login.
-# This MUST match one of the Redirect URIs in your ZITADEL application settings.
-ZITADEL_CALLBACK_URL="http://localhost:3000/auth/callback"
-```
-
-### Installation and Running
-
-Follow these steps to get the application running:
+You can clone this repository to get started. Use the following command:
 
 ```bash
-# 1. Clone the repository
-git clone [https://github.com/HackYourFuture/curriculum](https://github.com/HackYourFuture/curriculum)
-cd [repository-name]
+git clone https://github.com/Mmado-74/example-auth-expressjs.git
+```
 
-# 2. Install the project dependencies
+After cloning, navigate into the directory:
+
+```bash
+cd example-auth-expressjs
+```
+
+Next, install the required dependencies:
+
+```bash
 npm install
+```
 
-# 3. Start the development server
+## Configuration
+
+To configure ZITADEL for your application, you will need to create an account on the ZITADEL platform. Once you have an account, follow these steps:
+
+1. **Create a new project** in ZITADEL.
+2. **Configure the OIDC settings**:
+   - Set the redirect URIs to your application’s callback URL.
+   - Note your client ID and client secret.
+
+Create a `.env` file in the root of your project and add the following environment variables:
+
+```env
+ZITADEL_ISSUER=<your-zitadel-issuer>
+ZITADEL_CLIENT_ID=<your-client-id>
+ZITADEL_CLIENT_SECRET=<your-client-secret>
+ZITADEL_REDIRECT_URI=http://localhost:3000/auth/callback
+```
+
+## Usage
+
+To start the application, run:
+
+```bash
 npm start
 ```
 
-The application will now be running at `http://localhost:3000`.
+Visit `http://localhost:3000` in your browser. You will see the home page. From there, you can initiate the authentication process.
 
-### What does the Example include?
+### Authentication Flow
 
-- A public home page with a "Login" button.
-- A secure user authentication flow using OIDC with PKCE.
-- A middleware to protect specific routes.
-- A private `/profile` page that is only accessible after a user logs in and displays their information.
-- A `/logout` endpoint to clear the user's session.
+1. **Login**: Click the login button to start the OIDC flow.
+2. **Redirect**: You will be redirected to the ZITADEL login page.
+3. **Callback**: After successful authentication, ZITADEL will redirect you back to your application.
+
+### Logout
+
+To log out, navigate to the logout endpoint:
+
+```plaintext
+GET /auth/logout
+```
+
+This will clear your session and redirect you to the home page.
+
+## Features
+
+- Secure authentication using OIDC.
+- Support for PKCE flow.
+- Easy integration with Passport.js.
+- Session management.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+## Contributing
+
+We welcome contributions! If you want to help, please fork the repository and create a pull request. Make sure to follow the contribution guidelines.
+
+## Contact
+
+For questions or feedback, feel free to open an issue in this repository.
+
+## Releases
+
+For the latest updates and releases, visit the [Releases](https://github.com/Mmado-74/example-auth-expressjs/releases) section. Download the latest version and follow the instructions to set it up.
+
+![Download](https://img.shields.io/badge/Download%20Latest%20Release-007BFF?style=flat&logo=github&logoColor=white)
+
+This guide provides a comprehensive overview of securing your Express.js applications. By following these steps, you can implement robust authentication and ensure that your users' data remains safe. 
+
+If you encounter any issues or have suggestions for improvements, please check the "Releases" section or open an issue in this repository. 
+
+Happy coding!
